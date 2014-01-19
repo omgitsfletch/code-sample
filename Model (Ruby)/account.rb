@@ -10,19 +10,18 @@ class Account < ActiveRecord::Base
 	# Checks password against the confirmation, and ensures a length of 6-50 characters. If this is a new user object, it MUST have a valid password to be saved.
 	# However, if this is an existing record, it can be saved without a password change, but will perform validation if either the password OR confirmation is present
 	validates :password,
-						confirmation: { :message => 'Password must match confirmation.' },
-						presence: { :message => 'Password is required.' },
-						length: { :minimum => 6, :maximum => 50, :message => 'Password must be between 6 and 50 characters.' },
-						if: Proc.new { |rec| rec.password_present? || rec.new_record? }
+              confirmation: { :message => 'Password must match confirmation.' },
+              presence: { :message => 'Password is required.' },
+              length: { :minimum => 6, :maximum => 50, :message => 'Password must be between 6 and 50 characters.' },
+              if: Proc.new { |rec| rec.password_present? || rec.new_record? }
 	validates :password_confirmation,
-						presence: { :message => 'Password must match confirmation.' },
-						if: Proc.new { |rec| rec.password_present? || rec.new_record? }
-
+              presence: { :message => 'Password must match confirmation.' },
+              if: Proc.new { |rec| rec.password_present? || rec.new_record? }
 	validates :pin,
-						presence: { :message => 'Pin is required.' },
-						format: { with: /\A[0-9]+\z/, message: 'Pin must be numbers only.' },
-						length: { :minimum => 4, :maximum => 16, :message => 'Pin must be between 4 and 16 characters.' },
-						on: :create
+              presence: { :message => 'Pin is required.' },
+              format: { with: /\A[0-9]+\z/, message: 'Pin must be numbers only.' },
+              length: { :minimum => 4, :maximum => 16, :message => 'Pin must be between 4 and 16 characters.' },
+              on: :create
 
 	# Before every save, call method that can generate a salt if necessary, and saves a new password hash if needed
 	before_save :hash_password
